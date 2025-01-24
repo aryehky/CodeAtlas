@@ -1,9 +1,9 @@
 'use client';
 
 import { useState } from 'react';
-import Navbar from '../../components/common/Navbar';
-import NotesSection from '../../components/learning/NotesSection';
-import QuizSection from '../../components/learning/QuizSection';
+import Navbar from '../components/common/Navbar';
+import NotesSection from '../components/learning/NotesSection';
+import QuizSection from '../components/learning/QuizSection';
 import Image from 'next/image';
 
 export default function Home() {
