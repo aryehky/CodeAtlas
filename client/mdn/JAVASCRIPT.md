@@ -2,254 +2,278 @@
 
 ## Core Concepts
 
-### Variables and Declarations
+### Objects and Properties
+
+#### Object Basics
+Objects are useful when you need to group related data and functionality together. They're the fundamental building blocks for organizing code in JavaScript and are perfect for representing real-world entities with multiple characteristics.
+
 ```javascript
-// Variable Declarations
-let variableName = "value";      // Block-scoped, mutable
-const constantName = "value";     // Block-scoped, immutable
-var legacyVariable = "value";     // Function-scoped (not recommended)
-```
-
-### Data Types
-
-#### Primitive Types
-```javascript
-// String
-const text = "Hello, World";
-const template = `Value: ${variable}`;
-
-// Number
-const integer = 42;
-const float = 3.14;
-const scientific = 1e6;
-
-// Boolean
-const isActive = true;
-const isComplete = false;
-
-// Other Primitives
-const nullValue = null;
-const undefinedValue = undefined;
-const uniqueSymbol = Symbol('description');
-const bigIntValue = 9007199254740991n;
-```
-
-#### Reference Types
-```javascript
-// Object
-const person = {
-    name: "John",
-    age: 30,
-    greet() {
-        return `Hello, ${this.name}`;
-    }
-};
-
-// Array
-const numbers = [1, 2, 3, 4, 5];
-const mixed = ["text", 42, true, { key: "value" }];
-```
-
-### Functions
-
-#### Function Declarations
-```javascript
-// Standard Function
-function add(a, b) {
-    return a + b;
+// Object literal syntax
+const classOf2018 = {
+  students: 38,
+  year: 2018
 }
 
-// Function Expression
-const multiply = function(a, b) {
-    return a * b;
+// Accessing properties
+console.log(classOf2018.students); // 38
+console.log(classOf2018['year']); // 2018
+```
+
+**When to use:**
+- When you need to group related data together
+- When representing entities with multiple attributes
+- When you want to encapsulate related functionality
+- When creating data structures with key-value pairs
+
+#### Destructuring
+Destructuring makes code cleaner and more readable by allowing you to extract values from objects or arrays into distinct variables. It's particularly useful when working with complex objects or API responses.
+
+```javascript
+const rubiksCubeFacts = {
+  possiblePermutations: '43,252,003,274,489,856,000',
+  invented: '1974',
+  largestCube: '17x17x17'
 };
 
-// Arrow Function
-const divide = (a, b) => a / b;
+// Destructuring assignment
+const {possiblePermutations, invented, largestCube} = rubiksCubeFacts;
+```
 
-// Method in Object
-const calculator = {
-    add(a, b) {
-        return a + b;
-    }
+**When to use:**
+- When extracting multiple values from objects/arrays
+- When working with function parameters
+- When dealing with complex nested data structures
+- When you want to make code more readable
+
+#### Property Shorthand
+Property shorthand simplifies object creation when property names match variable names. This is particularly useful in modern JavaScript where you're often creating objects from existing variables.
+
+```javascript
+const activity = 'Surfing';
+const location = 'Beach';
+const beach = { activity, location }; // Same as { activity: activity, location: location }
+```
+
+**When to use:**
+- When creating objects from existing variables
+- When property names match variable names
+- In object method definitions
+- When returning multiple values from functions
+
+### Functions and Methods
+
+#### Arrow Functions
+Arrow functions provide a concise syntax for writing function expressions. They're particularly useful for short callback functions and when you want to preserve the lexical scope of `this`.
+
+```javascript
+// Traditional vs Arrow
+function add(a, b) {
+  return a + b;
+}
+
+const addArrow = (a, b) => a + b;
+```
+
+**When to use:**
+- For callback functions
+- When you need lexical `this` binding
+- For short, single-expression functions
+- In array methods like map, filter, reduce
+
+#### Higher-Order Functions
+Higher-order functions allow for more flexible and reusable code by treating functions as values. They're essential for functional programming patterns and creating abstractions.
+
+```javascript
+// Function as parameter
+const calculate = (operation, a, b) => {
+  return operation(a, b);
+};
+
+// Function returning function
+const multiply = (x) => {
+  return (y) => x * y;
 };
 ```
+
+**When to use:**
+- When implementing reusable operations
+- For function composition
+- When creating middleware or plugins
+- For event handling and callbacks
+
+### Array Methods
+
+#### Map, Filter, Reduce
+These methods provide a declarative way to transform and process arrays. They're more readable and less error-prone than traditional for loops.
+
+```javascript
+const numbers = [1, 2, 3, 4, 5];
+
+// Transform each element
+const doubled = numbers.map(n => n * 2);
+
+// Select elements
+const evens = numbers.filter(n => n % 2 === 0);
+
+// Aggregate values
+const sum = numbers.reduce((acc, n) => acc + n, 0);
+```
+
+**When to use:**
+- map: When transforming each element in an array
+- filter: When selecting elements based on a condition
+- reduce: When combining array elements into a single value
+- When you want to avoid mutation of original array
 
 ### Control Flow
 
-#### Conditional Statements
+#### Loops
+Different types of loops serve different purposes and are optimized for different use cases.
+
 ```javascript
-// If Statement
-if (condition) {
-    // code
-} else if (otherCondition) {
-    // code
-} else {
-    // code
+// For specific number of iterations
+for (let i = 0; i < 5; i++) {
+  console.log(i);
 }
 
-// Switch Statement
-switch (value) {
-    case 1:
-        // code
-        break;
-    case 2:
-        // code
-        break;
-    default:
-        // code
+// For iterating arrays/iterables
+for (const item of items) {
+  console.log(item);
+}
+
+// For object properties
+for (const key in object) {
+  console.log(key, object[key]);
 }
 ```
 
-#### Loops
+**When to use each loop:**
+- for: When you need index access and precise control
+- for...of: When iterating over array elements or other iterables
+- for...in: When iterating over object properties
+- while: When you don't know the number of iterations in advance
+
+#### Break and Continue
+These statements provide fine-grained control over loop execution.
+
+```javascript
+// Break example
+for (const item of items) {
+  if (item.price > 1000) break; // Exit early
+  console.log(item);
+}
+
+// Continue example
+for (const item of items) {
+  if (item.price < 10) continue; // Skip cheap items
+  console.log(item);
+}
+```
+
+**When to use:**
+- break: When you need to exit a loop early
+- continue: When you want to skip certain iterations
+- When optimizing loop performance
+- When implementing search algorithms
+
+## JavaScript Loops and Iterations
+
+### Basic Loops
 ```javascript
 // For Loop
-for (let i = 0; i < array.length; i++) {
-    // code
+for (let i = 0; i <= 5; i++) {
+  console.log(`Iteration: ${i}`);
 }
 
-// For...of Loop (Iterables)
-for (const item of array) {
-    // code
+// For...of (Arrays)
+const arr = [1, 2, 3];
+for (const num of arr) {
+  console.log(num);
 }
 
-// For...in Loop (Object Properties)
-for (const key in object) {
-    if (object.hasOwnProperty(key)) {
-        // code
-    }
-}
-
-// While Loop
-while (condition) {
-    // code
+// For...in (Objects)
+const obj = { a: 1, b: 2, c: 3 };
+for (const key in obj) {
+  console.log(`${key}: ${obj[key]}`);
 }
 ```
 
-### Error Handling
+### Array Methods
 ```javascript
-try {
-    // Code that might throw an error
-    throw new Error('Custom error message');
-} catch (error) {
-    console.error('Error:', error.message);
-} finally {
-    // Always executes
+// Join
+const arr = ['Hello', 'World'];
+console.log(arr.join(' ')); // "Hello World"
+
+// Fill
+const zeros = new Array(5).fill(0);
+console.log(zeros); // [0, 0, 0, 0, 0]
+
+// Includes
+const numbers = [1, 2, 3];
+console.log(numbers.includes(2)); // true
+```
+
+## JavaScript Hacks
+
+### Conditional Tricks
+```javascript
+// Ternary Operator
+const age = 20;
+const status = age >= 18 ? 'Adult' : 'Minor';
+
+// Short-Circuit Evaluation
+const name = '' || 'Default Name';
+const isAdmin = true && 'Admin Access Granted';
+
+// Optional Chaining
+const user = { profile: { name: 'John' } };
+console.log(user?.profile?.name); // "John"
+```
+
+### Array Operations
+```javascript
+// Destructuring for Swap
+let a = 1, b = 2;
+[a, b] = [b, a];
+
+// Generate Range
+const range = Array.from(
+  { length: 5 }, 
+  (_, i) => i + 1
+); // [1, 2, 3, 4, 5]
+
+// Spread and Rest
+const nums = [1, 2, 3];
+console.log([...nums, 4]); // [1, 2, 3, 4]
+
+function sum(...args) {
+  return args.reduce((a, b) => a + b, 0);
 }
 ```
 
-## Advanced Features
-
-### Promises and Async
+### Async Operations
 ```javascript
-// Promise Creation
-const promise = new Promise((resolve, reject) => {
-    if (success) {
-        resolve(result);
-    } else {
-        reject(error);
-    }
-});
+// Promise.all for Parallel Execution
+const promises = [
+  Promise.resolve(10),
+  Promise.resolve(20)
+];
 
-// Async/Await
-async function fetchData() {
-    try {
-        const response = await fetch(url);
-        const data = await response.json();
-        return data;
-    } catch (error) {
-        console.error('Error:', error);
-    }
-}
-```
-
-### Classes
-```javascript
-class Person {
-    constructor(name, age) {
-        this.name = name;
-        this.age = age;
-    }
-
-    greet() {
-        return `Hello, I'm ${this.name}`;
-    }
-
-    static createAnonymous() {
-        return new Person('Anonymous', 0);
-    }
-}
-
-// Inheritance
-class Employee extends Person {
-    constructor(name, age, role) {
-        super(name, age);
-        this.role = role;
-    }
-}
-```
-
-### Modules
-```javascript
-// Exporting
-export const utility = {
-    // utility methods
-};
-export default class MainClass {
-    // class implementation
-}
-
-// Importing
-import MainClass, { utility } from './module';
-```
-
-## DOM Manipulation
-
-### Element Selection
-```javascript
-// Query Selectors
-const element = document.querySelector('.class');
-const elements = document.querySelectorAll('.class');
-
-// ID and Class Selection
-const byId = document.getElementById('elementId');
-const byClass = document.getElementsByClassName('className');
-```
-
-### Event Handling
-```javascript
-element.addEventListener('click', (event) => {
-    event.preventDefault();
-    // Handle event
-});
-
-// Event Delegation
-parentElement.addEventListener('click', (event) => {
-    if (event.target.matches('.child-selector')) {
-        // Handle child element events
-    }
-});
+Promise.all(promises)
+  .then(([res1, res2]) => {
+    console.log(res1 + res2); // 30
+  });
 ```
 
 ## Best Practices
-
-### Code Organization
-1. Use consistent naming conventions
-2. Implement proper error handling
-3. Write modular, reusable code
-4. Comment complex logic
-
-### Performance
-1. Optimize loops and operations
-2. Use appropriate data structures
-3. Implement proper memory management
-4. Cache frequently accessed values
-
-### Security
-1. Validate input data
-2. Sanitize output
-3. Use secure coding practices
-4. Implement proper access controls
+1. Use const by default, let when needed
+2. Prefer arrow functions for callbacks
+3. Use destructuring for cleaner code
+4. Leverage array methods over loops
+5. Use meaningful variable names
+6. Use optional chaining for safe property access
+7. Implement short-circuit evaluation for cleaner code
+8. Use destructuring for cleaner variable assignments
 
 ## Additional Resources
 
@@ -262,3 +286,64 @@ parentElement.addEventListener('click', (event) => {
 - [ESLint](https://eslint.org/)
 - [Prettier](https://prettier.io/)
 - [TypeScript](https://www.typescriptlang.org/)
+
+### Advanced Array Methods
+```javascript
+// Finding Elements
+const numbers = [1, 2, 3, 4, 5];
+
+// Check if ANY element meets condition
+const hasEven = numbers.some(x => x % 2 === 0);  // true
+
+// Check if ALL elements meet condition
+const allPositive = numbers.every(x => x > 0);   // true
+
+// Find first element meeting condition
+const firstEven = numbers.find(x => x % 2 === 0); // 2
+
+// Transform and Filter
+const doubled = numbers
+  .filter(x => x % 2 === 0)    // Keep even numbers
+  .map(x => x * 2);            // Double them
+
+// Complex Reduce
+const items = [
+  { type: 'fruit', name: 'apple', price: 0.5 },
+  { type: 'fruit', name: 'banana', price: 0.3 },
+  { type: 'vegetable', name: 'carrot', price: 0.4 }
+];
+
+const fruitTotal = items
+  .filter(item => item.type === 'fruit')
+  .reduce((sum, item) => sum + item.price, 0);
+```
+
+### Loop Patterns
+```javascript
+// Early Exit with Break
+for (const item of items) {
+  if (item.price > 1) {
+    console.log('Found expensive item');
+    break;
+  }
+}
+
+// Skip Items with Continue
+for (const item of items) {
+  if (item.price < 0.5) continue;  // Skip cheap items
+  console.log(`Processing ${item.name}`);
+}
+
+// Nested Loop with Labels
+outer: for (let i = 0; i < 3; i++) {
+  for (let j = 0; j < 3; j++) {
+    if (i * j === 4) break outer;
+    console.log(i, j);
+  }
+}
+
+// Iterating with Index
+items.forEach((item, index) => {
+  console.log(`Item ${index + 1}: ${item.name}`);
+});
+```

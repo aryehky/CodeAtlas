@@ -1,78 +1,87 @@
-# Code Atlas
+# Learn To Code
 
-Code Atlas is an interactive learning platform that provides structured notes and practice quizzes for various programming topics including AWS, React, JavaScript, Python, SQL, TypeScript, HTML, CSS, and more.
+A comprehensive learning platform for developers to learn various programming languages, frameworks, and technologies through interactive quizzes and detailed notes.
 
 ## Features
 
-- 📚 Comprehensive notes for multiple programming topics
-- ✍️ Interactive practice quizzes
+- 📚 Comprehensive learning materials for multiple technologies
+- ✅ Interactive quizzes for practice and assessment
 - 🎯 Topic-specific learning paths
-- 🔄 Random quiz generator
-- 📱 Responsive design
+- 📱 Responsive design for all devices
+- 🌐 Server-side rendering with Next.js
 - 🎨 Modern UI with Tailwind CSS
+
+## Technologies Used
+
+- Next.js 14
+- React 18
+- TypeScript
+- Tailwind CSS
+- Vercel (Deployment)
 
 ## Getting Started
 
 ### Prerequisites
 
-- Node.js (v14 or higher)
+- Node.js 18+ 
 - npm or yarn
 
 ### Installation
 
-1. Clone the repository:
+1. Clone the repository
 ```bash
-git clone https://github.com/yourusername/code-atlas.git
-cd code-atlas
+git clone https://github.com/yourusername/learn-to-code.git
 ```
 
-2. Install dependencies:
+2. Install dependencies
 ```bash
-# Install client dependencies
-cd client
-npm install
-
-# Install server dependencies (if applicable)
-cd ../server
+cd learn-to-code
 npm install
 ```
 
-3. Start the development server:
+3. Run the development server
 ```bash
-# In the client directory
 npm run dev
 ```
 
-The application will be available at `http://localhost:3000`
+4. Open [http://localhost:3000](http://localhost:3000) in your browser
 
 ## Project Structure
 
 ```
-code-atlas/
-├── client/
-│   ├── src/
-│   │   ├── app/
-│   │   ├── components/
-│   │   └── styles/
-│   ├── public/
-│   └── package.json
-└── server/ (if applicable)
-    ├── src/
-    └── package.json
+learn-to-code/
+├── src/
+│   ├── app/
+│   │   ├── layout.tsx
+│   │   └── page.tsx
+│   ├── components/
+│   │   ├── common/
+│   │   │   └── Navbar.tsx
+│   │   └── learning/
+│   │       ├── NotesSection.tsx
+│   │       └── QuizSection.tsx
+│   └── mdn/
+│       ├── JAVASCRIPT.md
+│       ├── REACT.md
+│       └── ...
+├── public/
+├── next.config.js
+├── package.json
+└── tsconfig.json
 ```
 
 ## Available Topics
 
-- AWS
-- React
 - JavaScript
-- Python
-- SQL
+- React
+- Next.js
 - TypeScript
-- HTML
-- CSS
-- EdgeQL
-- C++
+- AWS
+- PostgreSQL
+- Firebase
+- Jest
+- Cypress
+- And more...
 
 ## Contributing
 
@@ -82,23 +91,18 @@ code-atlas/
 4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
-## Built With
-
-- [Next.js](https://nextjs.org/) - React framework
-- [Tailwind CSS](https://tailwindcss.com/) - CSS framework
-- [TypeScript](https://www.typescriptlang.org/) - Programming language
-- [React](https://reactjs.org/) - JavaScript library
-
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
 
 ## Acknowledgments
 
-- Thanks to all contributors who have helped make this project better
-- Special thanks to the open-source community
+- MDN Web Docs for reference materials
+- Next.js team for the amazing framework
+- All contributors who help improve this platform
 
 ## Contact
 
 Your Name - [@yourtwitter](https://twitter.com/yourtwitter)
-Project Link: [https://github.com/yourusername/code-atlas](https://github.com/yourusername/code-atlas)
+
+Project Link: [https://github.com/yourusername/learn-to-code](https://github.com/yourusername/learn-to-code)

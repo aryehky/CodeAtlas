@@ -30,6 +30,7 @@ const NotesSection: React.FC<NotesSectionProps> = ({ topicId }) => {
       }
 
       try {
+        console.log('Loading content for topic:', topicId);
         const response = await fetch(`/api/content/${topicId}`);
         if (!response.ok) {
           throw new Error('Failed to load content');
@@ -58,7 +59,7 @@ const NotesSection: React.FC<NotesSectionProps> = ({ topicId }) => {
 
   return (
     <div className="bg-white rounded-xl shadow-lg p-8 border border-gray-100">
-      <h2 className="text-2xl font-bold text-gray-800 mb-6">Documentation</h2>
+      <h2 className="text-2xl font-bold text-gray-800 mb-6">Notes</h2>
       <div 
         className="prose prose-lg max-w-none
           prose-headings:text-gray-800 

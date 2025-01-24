@@ -8,139 +8,199 @@ React is a JavaScript library for building user interfaces, particularly single-
 ### Components
 
 #### Functional Components
-```jsx
-function Greeting({ name }) {
-    return <h1>Hello, {name}!</h1>;
-}
+Functional components are JavaScript functions that return React elements. They're simpler, more readable, and with the introduction of Hooks, can handle state and side effects.
 
-// Arrow Function Component
-const Profile = ({ user }) => (
-    <div>
-        <h2>{user.name}</h2>
-        <p>{user.bio}</p>
-    </div>
-);
+```javascript
+function Welcome({ name }) {
+  return <h1>Hello, {name}</h1>;
+}
 ```
+
+**When to use:**
+- For simpler UI components
+- When you need hooks functionality
+- When you want better code readability
+- For better performance (smaller bundle size)
+- When you don't need lifecycle methods (pre-hooks)
 
 #### Class Components
-```jsx
-class Counter extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = { count: 0 };
-    }
+Class components are ES6 classes that extend React.Component. They provide more features like lifecycle methods and local state management.
 
-    render() {
-        return (
-            <div>
-                <p>Count: {this.state.count}</p>
-                <button onClick={() => this.setState({ count: this.state.count + 1 })}>
-                    Increment
-                </button>
-            </div>
-        );
-    }
+```javascript
+class Welcome extends React.Component {
+  render() {
+    return <h1>Hello, {this.props.name}</h1>;
+  }
 }
 ```
+
+**When to use:**
+- When working with legacy code
+- When you need error boundaries (only available in class components)
+- When you prefer object-oriented programming patterns
+- When you need to use lifecycle methods directly
 
 ### Hooks
 
-#### State Management
-```jsx
-function UserProfile() {
-    const [user, setUser] = useState({
-        name: '',
-        email: ''
-    });
+#### useState
+useState allows functional components to manage state. It returns current state and a function to update it.
 
-    const updateName = (name) => {
-        setUser(prevUser => ({
-            ...prevUser,
-            name
-        }));
-    };
-
-    return (
-        <div>
-            <input
-                value={user.name}
-                onChange={(e) => updateName(e.target.value)}
-            />
-        </div>
-    );
+```javascript
+function Counter() {
+  const [count, setCount] = useState(0);
+  return (
+    <button onClick={() => setCount(count + 1)}>
+      Count: {count}
+    </button>
+  );
 }
 ```
 
-#### Side Effects
-```jsx
-function DataFetcher() {
-    const [data, setData] = useState(null);
-    const [loading, setLoading] = useState(true);
+**When to use:**
+- When you need to manage local component state
+- For form input values
+- For toggling UI states
+- When state updates are simple
 
-    useEffect(() => {
-        async function fetchData() {
-            try {
-                const response = await fetch('api/data');
-                const result = await response.json();
-                setData(result);
-            } catch (error) {
-                console.error('Error fetching data:', error);
-            } finally {
-                setLoading(false);
-            }
-        }
+#### useEffect
+useEffect handles side effects in functional components, like data fetching, subscriptions, or DOM manipulations.
 
-        fetchData();
-    }, []);
+```javascript
+function UserProfile({ userId }) {
+  const [user, setUser] = useState(null);
+  
+  useEffect(() => {
+    fetchUser(userId).then(data => setUser(data));
+  }, [userId]);
 
-    if (loading) return <div>Loading...</div>;
-    return <div>{/* Render data */}</div>;
+  return <div>{user?.name}</div>;
 }
 ```
+
+**When to use:**
+- For data fetching
+- For subscriptions/event listeners
+- When you need to sync with external systems
+- For DOM manipulations
+- When you need cleanup operations
 
 ### Props and State
 
-#### Props Usage
-```jsx
-function Button({ label, onClick, disabled }) {
-    return (
-        <button
-            onClick={onClick}
-            disabled={disabled}
-            className="custom-button"
-        >
-            {label}
-        </button>
-    );
-}
+#### Props
+Props are read-only properties passed to components. They allow components to be reusable and configurable.
 
-// Usage
-<Button
-    label="Submit"
-    onClick={() => handleSubmit()}
-    disabled={false}
-/>
-```
-
-#### Context API
-```jsx
-const ThemeContext = React.createContext('light');
-
-function ThemeProvider({ children }) {
-    const [theme, setTheme] = useState('light');
-
-    return (
-        <ThemeContext.Provider value={{ theme, setTheme }}>
-            {children}
-        </ThemeContext.Provider>
-    );
-}
-
-function ThemedButton() {
-    const { theme } = useContext(ThemeContext);
-    return <button className={theme}>Themed Button</button>;
+```javascript
+function Button({ text, onClick, color = 'blue' }) {
+  return (
+    <button 
+      onClick={onClick}
+      style={{ backgroundColor: color }}
+    >
+      {text}
+    </button>
+  );
 }
 ```
+
+**When to use:**
+- To pass data from parent to child
+- For component configuration
+- When data doesn't need to change
+- For event handler functions
+- For component composition
+
+#### State
+State is mutable data that can change over time and triggers re-renders when updated.
+
+```javascript
+function Form() {
+  const [inputValue, setInputValue] = useState('');
+  const [isValid, setIsValid] = useState(true);
+
+  const handleChange = (e) => {
+    setInputValue(e.target.value);
+    setIsValid(e.target.value.length > 0);
+  };
+
+  return <input value={inputValue} onChange={handleChange} />;
+}
+```
+
+**When to use:**
+- For data that changes over time
+- For user input handling
+- For toggling UI states
+- For local component data
+- For loading/error states
+
+### Event Handling
+React events are named using camelCase and passed as JSX attributes.
+
+```javascript
+function HandleEvents() {
+  const handleClick = (e) => {
+    e.preventDefault();
+    console.log('Button clicked');
+  };
+
+  return <button onClick={handleClick}>Click Me</button>;
+}
+```
+
+**When to use:**
+- For user interactions
+- Form submissions
+- Input changes
+- Mouse/keyboard events
+- Custom event handling
+
+### Conditional Rendering
+Conditional rendering allows components to display different content based on conditions.
+
+```javascript
+function Greeting({ isLoggedIn }) {
+  return (
+    <div>
+      {isLoggedIn ? (
+        <UserGreeting />
+      ) : (
+        <GuestGreeting />
+      )}
+    </div>
+  );
+}
+```
+
+**When to use:**
+- To show/hide elements
+- For permission-based rendering
+- For loading states
+- For error handling
+- For feature toggles
+
+### Lists and Keys
+Keys help React identify which items have changed, been added, or been removed.
+
+```javascript
+function TodoList({ items }) {
+  return (
+    <ul>
+      {items.map(item => (
+        <li key={item.id}>
+          {item.text}
+        </li>
+      ))}
+    </ul>
+  );
+}
+```
+
+**When to use:**
+- When rendering arrays of elements
+- For dynamic lists
+- When elements can be added/removed
+- For optimizing list updates
+- For maintaining component state in lists
 
 ## Event Handling
 

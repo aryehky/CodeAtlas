@@ -1,1 +1,1 @@
-self.__REACT_LOADABLE_MANIFEST="{}"
+self.__REACT_LOADABLE_MANIFEST="{\"components/learning/QuizSection.tsx -> ./RandomQuiz\":{\"id\":\"components/learning/QuizSection.tsx -> ./RandomQuiz\",\"files\":[\"static/chunks/_app-pages-browser_src_components_learning_RandomQuiz_tsx.js\"]}}"

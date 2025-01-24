@@ -9,18 +9,12 @@
 # Next.js
 /.next/
 /out/
-/build
 
 # Production
 /build
-/dist
 
 # Environment files
-.env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
+.env*.local
 
 # Debug logs
 npm-debug.log*

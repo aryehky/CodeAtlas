@@ -2,18 +2,105 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useState } from 'react';
+
+interface TopicCategory {
+  name: string;
+  topics: string[];
+}
+
+const categories: TopicCategory[] = [
+  {
+    name: "Languages",
+    topics: [
+      "C++",
+      "CSS",
+      "HTML",
+      "Java",
+      "JavaScript",
+      "Python",
+      "Solidity",
+      "TypeScript"
+    ]
+  },
+  {
+    name: "Frameworks",
+    topics: [
+      "Next.js",
+      "React",
+      "Tailwind"
+    ]
+  },
+  {
+    name: "Databases",
+    topics: [
+      "EdgeQL",
+      "SQL",
+      "PostgreSQL",
+      "Firebase"
+    ]
+  },
+  {
+    name: "Hosting",
+    topics: [
+      "Vercel",
+      "AWS"
+    ]
+  },
+  {
+    name: "Query Languages",
+    topics: [
+      "GraphQL"
+    ]
+  },
+  {
+    name: "Tools",
+    topics: [
+      "Git",
+      "NPM"
+    ]
+  },
+  {
+    name: "Testing",
+    topics: [
+      "Jest",
+      "Cypress"
+    ]
+  },
+  {
+    name: "Security",
+    topics: [
+      "OAuth",
+      "JWT",
+      "SecureDB"
+    ]
+  },
+  {
+    name: "Visualization",
+    topics: [
+      "ChartJS",
+      "D3"
+    ]
+  }
+];
 
 const topics = [
   "AWS",
-  "C++",
   "CSS",
-  "EDGEQL",
   "HTML",
-  "JavaScript",
-  "Python",
-  "React",
-  "SQL",
-  "TypeScript"
+  "JAVASCRIPT",
+  "TYPESCRIPT",
+  "JEST",
+  "CYPRESS",
+  "OAUTH",
+  "JWT",
+  "SECUREDB",
+  "CHARTJS",
+  "D3",
+  "REACT",
+  "FIREBASE",
+  "NEXTJS",
+  "POSTGRESQL"
 ];
 
 interface NavbarProps {
@@ -22,6 +109,11 @@ interface NavbarProps {
 
 export default function Navbar({ onTopicSelect }: NavbarProps) {
   const pathname = usePathname();
+  const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
+
+  const toggleCategory = (categoryName: string) => {
+    setExpandedCategory(expandedCategory === categoryName ? null : categoryName);
+  };
 
   return (
     <nav className="fixed right-0 top-0 h-full w-72 bg-gray-900 text-white shadow-2xl">
@@ -43,23 +135,38 @@ export default function Navbar({ onTopicSelect }: NavbarProps) {
           <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-blue-500 opacity-0 transition-opacity group-hover:opacity-100" />
         </Link>
 
-        {/* Topics List */}
+        {/* Categories and Topics */}
         <div className="flex-grow overflow-y-auto">
-          <h2 className="text-lg font-semibold mb-4 text-gray-300">Topics</h2>
-          <div className="grid gap-2 pr-2">
-            {topics.map((topic) => (
-              <button
-                key={topic}
-                onClick={() => onTopicSelect(topic)}
-                className={`group relative w-full rounded-lg p-3 text-left transition-all duration-200
-                  ${pathname === `/topic/${topic.toLowerCase()}` 
-                    ? 'bg-gray-700 text-white' 
-                    : 'text-gray-300 hover:bg-gray-800 hover:text-white'
-                  }`}
-              >
-                <span className="relative z-10">{topic}</span>
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-purple-500/10 opacity-0 transition-opacity group-hover:opacity-100 rounded-lg" />
-              </button>
+          <div className="space-y-2">
+            {categories.map((category) => (
+              <div key={category.name} className="mb-4">
+                <button
+                  onClick={() => toggleCategory(category.name)}
+                  className="w-full text-left px-4 py-2 text-gray-300 hover:text-white font-semibold flex justify-between items-center"
+                >
+                  <span>{category.name}</span>
+                  <span className="text-sm">
+                    {expandedCategory === category.name ? '▼' : '▶'}
+                  </span>
+                </button>
+                {expandedCategory === category.name && (
+                  <div className="ml-4 space-y-1 mt-2">
+                    {category.topics.map((topic) => (
+                      <button
+                        key={topic}
+                        onClick={() => onTopicSelect(topic.toUpperCase())}
+                        className={`w-full rounded-lg p-2 text-left transition-all duration-200
+                          ${pathname === `/topic/${topic.toLowerCase()}` 
+                            ? 'bg-gray-700 text-white' 
+                            : 'text-gray-400 hover:bg-gray-800 hover:text-white'
+                          }`}
+                      >
+                        {topic}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
             ))}
           </div>
         </div>

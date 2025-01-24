@@ -1,7 +1,18 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import dynamic from 'next/dynamic';
 
-interface Question {
+const RandomQuiz = dynamic(() => import('./RandomQuiz'), {
+  ssr: false,
+  loading: () => (
+    <div className="bg-white rounded-lg shadow p-6">
+      <h2 className="text-2xl font-bold mb-4">Random Practice Quiz</h2>
+      <p>Loading questions...</p>
+    </div>
+  ),
+});
+
+export interface Question {
   id: number;
   question: string;
   options: string[];
@@ -12,7 +23,7 @@ interface QuizSectionProps {
   topicId?: string;
 }
 
-const quizzesByTopic: Record<string, Question[]> = {
+export const quizzesByTopic: Record<string, Question[]> = {
   'AWS': [
     {
       id: 1,
@@ -394,34 +405,474 @@ const quizzesByTopic: Record<string, Question[]> = {
     },
     {
       id: 13,
-      question: "What is destructuring in JavaScript?",
+      question: "What is object destructuring used for?",
       options: [
-        "A way to delete objects",
-        "A way to extract values from objects or arrays",
-        "A way to create objects",
-        "A way to merge objects"
+        "To delete object properties",
+        "To extract object properties into variables",
+        "To combine objects",
+        "To copy objects"
       ],
       correctAnswer: 1
     },
     {
       id: 14,
-      question: "What is the purpose of 'use strict'?",
+      question: "What is the shorthand property syntax in objects?",
       options: [
-        "To make code run faster",
-        "To enable strict mode and catch common mistakes",
-        "To include external libraries",
-        "To create global variables"
+        "When property name matches variable name, you can omit the value",
+        "When property value is undefined",
+        "When property name is a string",
+        "When property value is null"
+      ],
+      correctAnswer: 0
+    },
+    {
+      id: 15,
+      question: "What's the difference between arrow functions and regular functions regarding 'this'?",
+      options: [
+        "Arrow functions have their own 'this'",
+        "Arrow functions inherit 'this' from surrounding context",
+        "Arrow functions don't have 'this'",
+        "Regular functions don't have 'this'"
       ],
       correctAnswer: 1
     },
     {
-      id: 15,
-      question: "What is the difference between let and var?",
+      id: 16,
+      question: "What is a factory function?",
       options: [
-        "There is no difference",
-        "let is block-scoped, var is function-scoped",
-        "var is block-scoped, let is function-scoped",
-        "let is faster than var"
+        "A function that creates objects",
+        "A function that deletes objects",
+        "A function that modifies objects",
+        "A function that compares objects"
+      ],
+      correctAnswer: 0
+    },
+    {
+      id: 17,
+      question: "What is the purpose of getters and setters?",
+      options: [
+        "To make properties private",
+        "To intercept property access and assignment",
+        "To delete properties",
+        "To rename properties"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 18,
+      question: "Which array method would you use to transform each element?",
+      options: [
+        "filter()",
+        "reduce()",
+        "map()",
+        "forEach()"
+      ],
+      correctAnswer: 2
+    },
+    {
+      id: 19,
+      question: "What does the reduce() method do?",
+      options: [
+        "Removes elements from array",
+        "Combines array elements into single value",
+        "Filters array elements",
+        "Maps array elements"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 20,
+      question: "What's the difference between forEach and map?",
+      options: [
+        "forEach is faster",
+        "map creates a new array, forEach doesn't",
+        "forEach can modify elements, map can't",
+        "There is no difference"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 21,
+      question: "What is a higher-order function?",
+      options: [
+        "A function that takes long to execute",
+        "A function that accepts or returns functions",
+        "A function with many parameters",
+        "A function that uses recursion"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 22,
+      question: "When should you use the break statement?",
+      options: [
+        "To skip one iteration",
+        "To exit a loop early",
+        "To start a loop",
+        "To pause a loop"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 23,
+      question: "What is the purpose of the spread operator (...)?",
+      options: [
+        "To delete array elements",
+        "To expand elements into individual items",
+        "To sort arrays",
+        "To filter arrays"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 24,
+      question: "What does Array.fill() do?",
+      options: [
+        "Sorts the array",
+        "Removes elements",
+        "Fills array with a static value",
+        "Joins array elements"
+      ],
+      correctAnswer: 2
+    },
+    {
+      id: 25,
+      question: "How can you check if a number is even using modulo?",
+      options: [
+        "num / 2",
+        "num % 2 === 0",
+        "num * 2",
+        "num - 2"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 26,
+      question: "What is short-circuit evaluation?",
+      options: [
+        "A way to optimize code",
+        "Using && and || for conditional logic",
+        "A way to terminate loops",
+        "A way to catch errors"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 27,
+      question: "What is the purpose of optional chaining (?.)?",
+      options: [
+        "To create optional parameters",
+        "To safely access nested properties",
+        "To make properties optional",
+        "To chain function calls"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 28,
+      question: "How do you swap variables using array destructuring?",
+      options: [
+        "Using a temporary variable",
+        "[a, b] = [b, a]",
+        "swap(a, b)",
+        "a.swap(b)"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 29,
+      question: "What does Array.from() with a mapping function do?",
+      options: [
+        "Copies an array",
+        "Creates an array from another object",
+        "Generates a range of numbers",
+        "Converts array to object"
+      ],
+      correctAnswer: 2
+    },
+    {
+      id: 30,
+      question: "What's the difference between for...of and for...in?",
+      options: [
+        "No difference",
+        "for...of for arrays, for...in for object properties",
+        "for...in for arrays, for...of for object properties",
+        "They're interchangeable"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 31,
+      question: "What does Promise.all() do?",
+      options: [
+        "Cancels all promises",
+        "Runs promises sequentially",
+        "Runs promises in parallel and waits for all to complete",
+        "Rejects all promises"
+      ],
+      correctAnswer: 2
+    },
+    {
+      id: 32,
+      question: "How can you create an array with a range of numbers?",
+      options: [
+        "range(1, 5)",
+        "Array.range(5)",
+        "Array.from({length: 5}, (_, i) => i + 1)",
+        "new Array(1..5)"
+      ],
+      correctAnswer: 2
+    },
+    {
+      id: 33,
+      question: "Which loop should you use to iterate over object properties?",
+      options: [
+        "for...of",
+        "for...in",
+        "forEach",
+        "while"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 34,
+      question: "What will `[1, 2, 3].map(x => x * 2)` return?",
+      options: [
+        "[1, 2, 3]",
+        "[2, 4, 6]",
+        "undefined",
+        "6"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 35,
+      question: "How would you sum all numbers in an array [1, 2, 3, 4]?",
+      options: [
+        "array.sum()",
+        "array.reduce((a, b) => a + b, 0)",
+        "array.forEach(sum += x)",
+        "array.total()"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 36,
+      question: "What's the output of `['a', 'b', 'c'].join('-')`?",
+      options: [
+        "abc",
+        "a-b-c",
+        "['a'-'b'-'c']",
+        "a,b,c"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 37,
+      question: "How do you create an array of 5 zeros using Array.fill()?",
+      options: [
+        "Array(5).fill(0)",
+        "new Array.fill(0, 5)",
+        "[].fill(0, 5)",
+        "Array.fill(0).length(5)"
+      ],
+      correctAnswer: 0
+    },
+    {
+      id: 38,
+      question: "What's wrong with this loop: `for(let i = 0; i < 5; i--)`?",
+      options: [
+        "Syntax error",
+        "Nothing wrong",
+        "Will run infinitely",
+        "i cannot be decremented"
+      ],
+      correctAnswer: 2
+    },
+    {
+      id: 39,
+      question: "How do you check if ANY array element is greater than 5?",
+      options: [
+        "array.includes(x > 5)",
+        "array.some(x => x > 5)",
+        "array.filter(x => x > 5)",
+        "array.find(x => x > 5)"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 40,
+      question: "What does `array.every(x => x > 0)` check?",
+      options: [
+        "If array contains 0",
+        "If all elements are positive",
+        "If any element is positive",
+        "If array is empty"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 41,
+      question: "How do you find the first even number in an array?",
+      options: [
+        "array.filter(x => x % 2 === 0)",
+        "array.find(x => x % 2 === 0)",
+        "array.some(x => x % 2 === 0)",
+        "array.includes(x => x % 2 === 0)"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 42,
+      question: "What's the difference between break and continue in loops?",
+      options: [
+        "No difference",
+        "break exits loop, continue skips iteration",
+        "continue exits loop, break skips iteration",
+        "They both exit the loop"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 43,
+      question: "What is the .length property used for in arrays?",
+      options: [
+        "To change array size",
+        "To get number of elements in array",
+        "To get last element",
+        "To add new elements"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 44,
+      question: "What's the difference between null and undefined?",
+      options: [
+        "They are the same",
+        "null is assigned, undefined is default empty value",
+        "undefined is assigned, null is default empty value",
+        "null is for numbers, undefined for strings"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 45,
+      question: "What will `Math.floor(5.95)` return?",
+      options: [
+        "6",
+        "5",
+        "5.95",
+        "5.9"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 46,
+      question: "Which operator is used for string interpolation in template literals?",
+      options: [
+        "{variable}",
+        "#{variable}",
+        "${variable}",
+        "@{variable}"
+      ],
+      correctAnswer: 2
+    },
+    {
+      id: 47,
+      question: "What's the difference between let and const?",
+      options: [
+        "No difference",
+        "let is block-scoped, const is function-scoped",
+        "const cannot be reassigned, let can be",
+        "let cannot be reassigned, const can be"
+      ],
+      correctAnswer: 2
+    },
+    {
+      id: 48,
+      question: "What will `365 % 7` return?",
+      options: [
+        "52",
+        "1",
+        "7",
+        "0"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 49,
+      question: "What's the scope of a variable declared with var?",
+      options: [
+        "Block scope",
+        "Function scope",
+        "Module scope",
+        "No scope"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 50,
+      question: "Which method is used to add elements to the end of an array?",
+      options: [
+        "append()",
+        "push()",
+        "add()",
+        "insert()"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 51,
+      question: "What does the logical NOT operator (!) do?",
+      options: [
+        "Adds numbers",
+        "Concatenates strings",
+        "Inverts boolean values",
+        "Compares values"
+      ],
+      correctAnswer: 2
+    },
+    {
+      id: 52,
+      question: "What's the result of `'5' + 2` in JavaScript?",
+      options: [
+        "7",
+        "'52'",
+        "52",
+        "Error"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 53,
+      question: "Which values are considered falsy in JavaScript?",
+      options: [
+        "Only false",
+        "false, 0, '', null, undefined, NaN",
+        "false and 0 only",
+        "false, null, and undefined only"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 54,
+      question: "What's the purpose of the switch statement?",
+      options: [
+        "To declare variables",
+        "To create loops",
+        "To handle multiple conditions for a single value",
+        "To define functions"
+      ],
+      correctAnswer: 2
+    },
+    {
+      id: 55,
+      question: "How do you write a multi-line comment in JavaScript?",
+      options: [
+        "// comment //",
+        "/* comment */",
+        "# comment #",
+        "<!-- comment -->"
       ],
       correctAnswer: 1
     }
@@ -591,118 +1042,6 @@ const quizzesByTopic: Record<string, Question[]> = {
         "vw"
       ],
       correctAnswer: 3
-    }
-  ],
-  'EDGEQL': [
-    {
-      id: 1,
-      question: "What is EdgeQL?",
-      options: [
-        "A database management system",
-        "A query language for EdgeDB",
-        "An edge computing framework",
-        "A JavaScript library"
-      ],
-      correctAnswer: 1
-    },
-    {
-      id: 2,
-      question: "How do you select all properties from a type in EdgeQL?",
-      options: [
-        "SELECT * FROM Type",
-        "SELECT Type {*}",
-        "SELECT ALL FROM Type",
-        "GET Type.*"
-      ],
-      correctAnswer: 1
-    },
-    {
-      id: 3,
-      question: "What is the correct way to filter results in EdgeQL?",
-      options: [
-        "SELECT User WHERE name = 'John'",
-        "SELECT User FILTER .name = 'John'",
-        "SELECT User {FILTER name = 'John'}",
-        "SELECT User WITH name = 'John'"
-      ],
-      correctAnswer: 1
-    },
-    {
-      id: 4,
-      question: "How do you create a new object in EdgeQL?",
-      options: [
-        "CREATE User {name := 'John'}",
-        "INSERT User {name := 'John'}",
-        "NEW User {name := 'John'}",
-        "ADD User {name := 'John'}"
-      ],
-      correctAnswer: 1
-    },
-    {
-      id: 5,
-      question: "What is the correct way to update an object in EdgeQL?",
-      options: [
-        "MODIFY User FILTER .id = 1 SET {name := 'John'}",
-        "UPDATE User SET {name := 'John'} WHERE id = 1",
-        "UPDATE User FILTER .id = 1 SET {name := 'John'}",
-        "ALTER User FILTER .id = 1 SET {name := 'John'}"
-      ],
-      correctAnswer: 2
-    },
-    {
-      id: 6,
-      question: "How do you delete objects in EdgeQL?",
-      options: [
-        "REMOVE User FILTER .id = 1",
-        "DROP User FILTER .id = 1",
-        "DELETE User FILTER .id = 1",
-        "ERASE User FILTER .id = 1"
-      ],
-      correctAnswer: 2
-    },
-    {
-      id: 7,
-      question: "What is the correct way to link objects in EdgeQL?",
-      options: [
-        "LINK posts := Post",
-        "REFERENCE posts := Post",
-        "CONNECT posts := Post",
-        "RELATION posts := Post"
-      ],
-      correctAnswer: 0
-    },
-    {
-      id: 8,
-      question: "How do you order results in EdgeQL?",
-      options: [
-        "SELECT User SORT BY .name ASC",
-        "SELECT User ORDER BY .name ASC",
-        "SELECT User ORDER .name ASC",
-        "SELECT User ARRANGE BY .name ASC"
-      ],
-      correctAnswer: 1
-    },
-    {
-      id: 9,
-      question: "What is the correct way to limit results in EdgeQL?",
-      options: [
-        "SELECT User {*} TAKE 5",
-        "SELECT User {*} TOP 5",
-        "SELECT User {*} LIMIT 5",
-        "SELECT User {*} FIRST 5"
-      ],
-      correctAnswer: 2
-    },
-    {
-      id: 10,
-      question: "How do you perform aggregation in EdgeQL?",
-      options: [
-        "SELECT count(User)",
-        "SELECT User.count()",
-        "SELECT COUNT(User)",
-        "SELECT (SELECT User).count()"
-      ],
-      correctAnswer: 0
     }
   ],
   'HTML': [
@@ -1204,6 +1543,171 @@ const quizzesByTopic: Record<string, Question[]> = {
         "Both can be updated freely"
       ],
       correctAnswer: 1
+    },
+    {
+      id: 16,
+      question: "What is a functional component in React?",
+      options: [
+        "A regular JavaScript function",
+        "A function that returns React elements",
+        "A class that extends React.Component",
+        "A component with functions only"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 17,
+      question: "When should you use the useState hook?",
+      options: [
+        "Only in class components",
+        "To manage state in functional components",
+        "To create new components",
+        "To handle routing"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 18,
+      question: "What is the purpose of useEffect?",
+      options: [
+        "To create side effects",
+        "To handle component lifecycle and side effects",
+        "To affect other components",
+        "To create global state"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 19,
+      question: "What's the difference between props and state?",
+      options: [
+        "Props are internal, state is external",
+        "Props are mutable, state is immutable",
+        "Props are passed from parent, state is managed internally",
+        "There is no difference"
+      ],
+      correctAnswer: 2
+    },
+    {
+      id: 20,
+      question: "Why do we need keys in lists?",
+      options: [
+        "For styling purposes",
+        "To make lists look better",
+        "To help React identify changed items",
+        "Keys are optional"
+      ],
+      correctAnswer: 2
+    },
+    {
+      id: 21,
+      question: "What is conditional rendering?",
+      options: [
+        "Rendering based on conditions",
+        "Rendering all conditions",
+        "A type of CSS",
+        "A React component"
+      ],
+      correctAnswer: 0
+    },
+    {
+      id: 22,
+      question: "When should you use a class component instead of a functional component?",
+      options: [
+        "Always",
+        "Never",
+        "When you need error boundaries",
+        "When you have state"
+      ],
+      correctAnswer: 2
+    },
+    {
+      id: 23,
+      question: "What is the virtual DOM?",
+      options: [
+        "A copy of the real DOM",
+        "A faster version of DOM",
+        "React's representation of UI",
+        "A browser feature"
+      ],
+      correctAnswer: 2
+    },
+    {
+      id: 24,
+      question: "How do you handle forms in React?",
+      options: [
+        "Using only HTML forms",
+        "Using controlled components",
+        "Forms aren't used in React",
+        "Using jQuery"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 25,
+      question: "What is prop drilling?",
+      options: [
+        "A React feature",
+        "Passing props through multiple levels",
+        "Creating new props",
+        "Removing props"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 26,
+      question: "What is the Context API used for?",
+      options: [
+        "Styling components",
+        "Managing global state",
+        "Creating components",
+        "Handling events"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 27,
+      question: "What is a pure component?",
+      options: [
+        "A component without state",
+        "A component that only renders once",
+        "A component that only re-renders if props/state change",
+        "A component without props"
+      ],
+      correctAnswer: 2
+    },
+    {
+      id: 28,
+      question: "What is the purpose of React.memo?",
+      options: [
+        "To add memory to components",
+        "To prevent unnecessary re-renders",
+        "To memorize component data",
+        "To improve loading speed"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 29,
+      question: "What are React Hooks rules?",
+      options: [
+        "Can be used anywhere",
+        "Must be used at top level of component",
+        "Can be used in loops",
+        "Can be used conditionally"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 30,
+      question: "What is the useCallback hook used for?",
+      options: [
+        "To cache functions",
+        "To call functions",
+        "To create callbacks",
+        "To handle events"
+      ],
+      correctAnswer: 0
     }
   ],
   'SQL': [
@@ -1220,10 +1724,10 @@ const quizzesByTopic: Record<string, Question[]> = {
     },
     {
       id: 2,
-      question: "Which SQL command is used to extract data from a database?",
+      question: "Which SQL statement is used to extract data from a database?",
       options: [
-        "EXTRACT",
         "GET",
+        "EXTRACT",
         "SELECT",
         "OPEN"
       ],
@@ -1231,62 +1735,7 @@ const quizzesByTopic: Record<string, Question[]> = {
     },
     {
       id: 3,
-      question: "Which SQL clause is used to filter records?",
-      options: [
-        "WHERE",
-        "HAVING",
-        "FILTER",
-        "CONDITION"
-      ],
-      correctAnswer: 0
-    },
-    {
-      id: 4,
-      question: "How do you insert a new record into a table?",
-      options: [
-        "ADD INTO table_name VALUES ()",
-        "INSERT INTO table_name VALUES ()",
-        "INSERT VALUES INTO table_name",
-        "PUT INTO table_name VALUES ()"
-      ],
-      correctAnswer: 1
-    },
-    {
-      id: 5,
-      question: "Which command is used to update data in a database?",
-      options: [
-        "MODIFY",
-        "SAVE",
-        "UPDATE",
-        "EDIT"
-      ],
-      correctAnswer: 2
-    },
-    {
-      id: 6,
-      question: "What is the correct way to select all columns from a table?",
-      options: [
-        "SELECT [*] FROM table",
-        "SELECT ALL FROM table",
-        "SELECT * FROM table",
-        "SELECT %.% FROM table"
-      ],
-      correctAnswer: 2
-    },
-    {
-      id: 7,
-      question: "Which SQL function is used to count records?",
-      options: [
-        "COUNT()",
-        "SUM()",
-        "NUMBER()",
-        "TOTAL()"
-      ],
-      correctAnswer: 0
-    },
-    {
-      id: 8,
-      question: "What is a PRIMARY KEY?",
+      question: "What is a primary key?",
       options: [
         "The first column in a table",
         "A unique identifier for each record",
@@ -1296,81 +1745,83 @@ const quizzesByTopic: Record<string, Question[]> = {
       correctAnswer: 1
     },
     {
-      id: 9,
-      question: "Which SQL command is used to delete data from a database?",
+      id: 4,
+      question: "Which SQL keyword is used to sort the result-set?",
       options: [
-        "REMOVE",
-        "DELETE",
-        "ERASE",
-        "DROP"
+        "SORT BY",
+        "ORDER BY",
+        "ARRANGE BY",
+        "ORGANIZE BY"
       ],
       correctAnswer: 1
     },
     {
-      id: 10,
-      question: "What is a FOREIGN KEY?",
+      id: 5,
+      question: "What is the purpose of the JOIN clause in SQL?",
       options: [
-        "A key from a different database",
-        "A key that references a PRIMARY KEY in another table",
-        "A non-primary key",
-        "A key used in other countries"
-      ],
-      correctAnswer: 1
-    },
-    {
-      id: 11,
-      question: "Which SQL command is used to create a new table?",
-      options: [
-        "BUILD TABLE",
-        "GENERATE TABLE",
-        "CREATE TABLE",
-        "MAKE TABLE"
-      ],
-      correctAnswer: 2
-    },
-    {
-      id: 12,
-      question: "What is the purpose of JOIN in SQL?",
-      options: [
-        "To join two databases",
+        "To join two strings together",
         "To combine rows from two or more tables",
-        "To join two columns",
+        "To join two databases",
         "To connect to the database"
       ],
       correctAnswer: 1
-    },
+    }
+  ],
+  'POSTGRESQL': [
     {
-      id: 13,
-      question: "Which SQL operator is used to search for a pattern?",
+      id: 1,
+      question: "What type of database is PostgreSQL?",
       options: [
-        "FIND",
-        "SEARCH",
-        "LIKE",
-        "MATCH"
-      ],
-      correctAnswer: 2
-    },
-    {
-      id: 14,
-      question: "What is the difference between HAVING and WHERE?",
-      options: [
-        "No difference",
-        "HAVING is used with GROUP BY, WHERE is used for row filtering",
-        "WHERE is used with GROUP BY, HAVING is used for row filtering",
-        "HAVING is faster than WHERE"
+        "NoSQL Database",
+        "Object-Relational Database",
+        "Key-Value Store",
+        "Document Database"
       ],
       correctAnswer: 1
     },
     {
-      id: 15,
-      question: "Which SQL function returns the current date?",
+      id: 2,
+      question: "Which of these is a PostgreSQL-specific data type?",
       options: [
-        "DATE()",
-        "GETDATE()",
-        "NOW()",
-        "CURRENT_DATE()"
+        "VARCHAR",
+        "INTEGER",
+        "JSONB",
+        "DATE"
       ],
       correctAnswer: 2
+    },
+    {
+      id: 3,
+      question: "What is PostGIS?",
+      options: [
+        "A PostgreSQL backup tool",
+        "A spatial database extender for PostgreSQL",
+        "A GUI for PostgreSQL",
+        "A PostgreSQL query optimizer"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 4,
+      question: "What is a unique feature of PostgreSQL compared to standard SQL?",
+      options: [
+        "Basic SELECT queries",
+        "Table joins",
+        "Table inheritance",
+        "INSERT statements"
+      ],
+      correctAnswer: 2
+    },
+    {
+      id: 5,
+      question: "Which concurrency control does PostgreSQL use?",
+      options: [
+        "MVCC (Multi-Version Concurrency Control)",
+        "Simple locking",
+        "Single version control",
+        "No concurrency control"
+      ],
+      correctAnswer: 0
     }
   ],
   'TypeScript': [
@@ -1553,124 +2004,1322 @@ const quizzesByTopic: Record<string, Question[]> = {
       correctAnswer: 0  // Index of the correct option (0-3)
     },
     // Add more questions...
+  ],
+  'JEST': [
+    {
+      id: 1,
+      question: "What is Jest primarily used for?",
+      options: [
+        "Database management",
+        "JavaScript testing",
+        "State management",
+        "API development"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 2,
+      question: "Which function is used to group related test cases in Jest?",
+      options: [
+        "group()",
+        "suite()",
+        "describe()",
+        "collection()"
+      ],
+      correctAnswer: 2
+    },
+    {
+      id: 3,
+      question: "What is the correct way to write a test case in Jest?",
+      options: [
+        "it('should work', function() {})",
+        "test('should work', () => {})",
+        "assert('should work', () => {})",
+        "spec('should work', () => {})"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 4,
+      question: "Which matcher is used to check exact equality in Jest?",
+      options: [
+        "toEqual()",
+        "toBe()",
+        "toMatch()",
+        "toStrictEqual()"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 5,
+      question: "How do you create a mock function in Jest?",
+      options: [
+        "mock.fn()",
+        "jest.mock()",
+        "jest.fn()",
+        "new Mock()"
+      ],
+      correctAnswer: 2
+    },
+    {
+      id: 6,
+      question: "What is the purpose of beforeEach() in Jest?",
+      options: [
+        "To run code after each test",
+        "To run code before all tests",
+        "To run code before each test",
+        "To skip the next test"
+      ],
+      correctAnswer: 2
+    },
+    {
+      id: 7,
+      question: "How do you test asynchronous code in Jest?",
+      options: [
+        "Use async/await or return a promise",
+        "Use setTimeout",
+        "Use setInterval",
+        "Use callbacks"
+      ],
+      correctAnswer: 0
+    },
+    {
+      id: 8,
+      question: "What command runs Jest in watch mode?",
+      options: [
+        "jest --watchAll",
+        "jest --monitor",
+        "jest --observe",
+        "jest --live"
+      ],
+      correctAnswer: 0
+    },
+    {
+      id: 9,
+      question: "What is snapshot testing in Jest?",
+      options: [
+        "Taking screenshots of components",
+        "Saving the current state of tests",
+        "Comparing UI components with saved versions",
+        "Testing database snapshots"
+      ],
+      correctAnswer: 2
+    },
+    {
+      id: 10,
+      question: "How do you mock an entire module in Jest?",
+      options: [
+        "mock('./module')",
+        "jest.mock('./module')",
+        "mock.module('./module')",
+        "jest.mockModule('./module')"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 11,
+      question: "What is the purpose of expect.assertions() in Jest?",
+      options: [
+        "To verify the number of assertions in a test",
+        "To create new assertions",
+        "To disable assertions",
+        "To count total assertions in all tests"
+      ],
+      correctAnswer: 0
+    },
+    {
+      id: 12,
+      question: "How do you test if a function was called in Jest?",
+      options: [
+        "expect(fn).toBeCalled()",
+        "expect(fn).toHaveBeenCalled()",
+        "expect(fn).wasCalled()",
+        "expect(fn).called()"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 13,
+      question: "What is the purpose of jest.spyOn()?",
+      options: [
+        "To create a new mock function",
+        "To track calls to an object's methods",
+        "To spy on other test files",
+        "To monitor test performance"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 14,
+      question: "How do you run a single test file in Jest?",
+      options: [
+        "jest filename.test.js",
+        "jest run filename.test.js",
+        "jest --file filename.test.js",
+        "jest --only filename.test.js"
+      ],
+      correctAnswer: 0
+    },
+    {
+      id: 15,
+      question: "What does the --coverage flag do in Jest?",
+      options: [
+        "Increases test coverage automatically",
+        "Shows which parts of code are tested",
+        "Covers all possible test scenarios",
+        "Covers only important tests"
+      ],
+      correctAnswer: 1
+    }
+  ],
+  'CYPRESS': [
+    {
+      id: 1,
+      question: "What type of testing framework is Cypress?",
+      options: [
+        "Unit testing only",
+        "End-to-end testing",
+        "API testing only",
+        "Performance testing"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 2,
+      question: "Which command is used to select elements in Cypress?",
+      options: [
+        "cy.find()",
+        "cy.select()",
+        "cy.get()",
+        "cy.query()"
+      ],
+      correctAnswer: 2
+    },
+    {
+      id: 3,
+      question: "How do you make assertions in Cypress?",
+      options: [
+        "assert()",
+        "expect()",
+        "should()",
+        "test()"
+      ],
+      correctAnswer: 2
+    },
+    {
+      id: 4,
+      question: "What is the recommended way to select elements for testing in Cypress?",
+      options: [
+        "Using class names",
+        "Using IDs",
+        "Using data-cy attributes",
+        "Using element tags"
+      ],
+      correctAnswer: 2
+    },
+    {
+      id: 5,
+      question: "How do you wait for an API request in Cypress?",
+      options: [
+        "cy.wait('@alias')",
+        "cy.waitFor('api')",
+        "cy.pause()",
+        "cy.delay()"
+      ],
+      correctAnswer: 0
+    },
+    {
+      id: 6,
+      question: "What command is used to type text into an input field?",
+      options: [
+        "cy.input()",
+        "cy.enter()",
+        "cy.type()",
+        "cy.write()"
+      ],
+      correctAnswer: 2
+    },
+    {
+      id: 7,
+      question: "How do you intercept network requests in Cypress?",
+      options: [
+        "cy.intercept()",
+        "cy.network()",
+        "cy.mock()",
+        "cy.stub()"
+      ],
+      correctAnswer: 0
+    },
+    {
+      id: 8,
+      question: "What command opens the Cypress Test Runner?",
+      options: [
+        "cypress start",
+        "cypress open",
+        "cypress run",
+        "cypress launch"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 9,
+      question: "How do you load fixture data in Cypress?",
+      options: [
+        "cy.load('fixture')",
+        "cy.fixture()",
+        "cy.data()",
+        "cy.import()"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 10,
+      question: "What is the purpose of cy.within()?",
+      options: [
+        "To set a timeout",
+        "To scope commands to within an element",
+        "To test within a timeframe",
+        "To test within a component"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 11,
+      question: "How do you visit a URL in Cypress?",
+      options: [
+        "cy.goto()",
+        "cy.navigate()",
+        "cy.visit()",
+        "cy.open()"
+      ],
+      correctAnswer: 2
+    },
+    {
+      id: 12,
+      question: "What is the default command timeout in Cypress?",
+      options: [
+        "2000ms",
+        "4000ms",
+        "6000ms",
+        "8000ms"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 13,
+      question: "How do you create custom commands in Cypress?",
+      options: [
+        "Cypress.addCommand()",
+        "Cypress.Commands.add()",
+        "cy.createCommand()",
+        "cy.extend()"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 14,
+      question: "What does cy.contains() do?",
+      options: [
+        "Checks if an element exists",
+        "Finds element by text content",
+        "Contains a specific attribute",
+        "Checks if element contains children"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 15,
+      question: "How do you run Cypress tests headlessly?",
+      options: [
+        "cypress --headless",
+        "cypress run",
+        "cypress test",
+        "cypress ci"
+      ],
+      correctAnswer: 1
+    }
+  ],
+  'OAUTH': [
+    {
+      id: 1,
+      question: "What is OAuth 2.0 primarily used for?",
+      options: [
+        "User authentication only",
+        "Authorization and delegated access",
+        "Password encryption",
+        "Database security"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 2,
+      question: "Which OAuth 2.0 flow is recommended for web applications?",
+      options: [
+        "Implicit Flow",
+        "Authorization Code Flow",
+        "Password Flow",
+        "Client Credentials Flow"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 3,
+      question: "What is the purpose of the 'state' parameter in OAuth?",
+      options: [
+        "To store user data",
+        "To prevent CSRF attacks",
+        "To track authorization status",
+        "To encrypt tokens"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 4,
+      question: "What is PKCE used for in OAuth?",
+      options: [
+        "Token encryption",
+        "User authentication",
+        "Secure code exchange for public clients",
+        "Database access"
+      ],
+      correctAnswer: 2
+    },
+    {
+      id: 5,
+      question: "Which grant type should be used for machine-to-machine authentication?",
+      options: [
+        "Authorization Code",
+        "Implicit",
+        "Client Credentials",
+        "Password"
+      ],
+      correctAnswer: 2
+    }
+  ],
+  'JWT': [
+    {
+      id: 1,
+      question: "What are the three parts of a JWT?",
+      options: [
+        "Header, Body, Signature",
+        "Header, Payload, Signature",
+        "Header, Content, Verification",
+        "Token, Data, Signature"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 2,
+      question: "What is the purpose of JWT signing?",
+      options: [
+        "To encrypt the data",
+        "To verify token integrity",
+        "To compress the token",
+        "To format the data"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 3,
+      question: "Where should you store JWTs in a web application?",
+      options: [
+        "Local Storage",
+        "HTTP-only Cookies",
+        "Session Storage",
+        "JavaScript variables"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 4,
+      question: "What is a common security issue with JWTs?",
+      options: [
+        "They're too short",
+        "They can't be encrypted",
+        "They can't be invalidated easily",
+        "They're too slow"
+      ],
+      correctAnswer: 2
+    },
+    {
+      id: 5,
+      question: "What should you include in a JWT payload?",
+      options: [
+        "Sensitive user data",
+        "Passwords",
+        "Essential claims only",
+        "Database credentials"
+      ],
+      correctAnswer: 2
+    }
+  ],
+  'SECUREDB': [
+    {
+      id: 1,
+      question: "What is SQL injection?",
+      options: [
+        "A database backup method",
+        "A way to optimize queries",
+        "A type of security attack",
+        "A database design pattern"
+      ],
+      correctAnswer: 2
+    },
+    {
+      id: 2,
+      question: "How can you prevent SQL injection?",
+      options: [
+        "Use more indexes",
+        "Use parameterized queries",
+        "Use faster queries",
+        "Use better hardware"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 3,
+      question: "What is the principle of least privilege?",
+      options: [
+        "Give users all permissions",
+        "Give users minimum required permissions",
+        "Remove all permissions",
+        "Share all permissions"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 4,
+      question: "What is encryption at rest?",
+      options: [
+        "Encrypting data during transfer",
+        "Encrypting stored data",
+        "Encrypting backups",
+        "Encrypting queries"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 5,
+      question: "Which is a best practice for database security?",
+      options: [
+        "Store passwords in plain text",
+        "Use default database settings",
+        "Regular security audits",
+        "Share database credentials"
+      ],
+      correctAnswer: 2
+    }
+  ],
+  'CHARTJS': [
+    {
+      id: 1,
+      question: "What type of HTML element does Chart.js use for rendering?",
+      options: [
+        "SVG",
+        "Canvas",
+        "Div",
+        "WebGL"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 2,
+      question: "Which method is used to create a new chart in Chart.js?",
+      options: [
+        "new Graph()",
+        "new Chart()",
+        "createChart()",
+        "Chart.create()"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 3,
+      question: "What is the correct way to specify a chart type in Chart.js?",
+      options: [
+        "chartType: 'bar'",
+        "style: 'bar'",
+        "type: 'bar'",
+        "graph: 'bar'"
+      ],
+      correctAnswer: 2
+    },
+    {
+      id: 4,
+      question: "How do you update data in an existing Chart.js chart?",
+      options: [
+        "chart.refresh()",
+        "chart.update()",
+        "chart.redraw()",
+        "chart.render()"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 5,
+      question: "Which property is used to configure chart animations?",
+      options: [
+        "animate",
+        "transition",
+        "animation",
+        "motion"
+      ],
+      correctAnswer: 2
+    }
+  ],
+  'D3': [
+    {
+      id: 1,
+      question: "What does D3 stand for?",
+      options: [
+        "Data-Driven Development",
+        "Data-Driven Documents",
+        "Document-Driven Data",
+        "Dynamic Data Documents"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 2,
+      question: "Which method is used to select elements in D3?",
+      options: [
+        "querySelector()",
+        "find()",
+        "select()",
+        "get()"
+      ],
+      correctAnswer: 2
+    },
+    {
+      id: 3,
+      question: "What is the purpose of d3.scale?",
+      options: [
+        "To resize the SVG",
+        "To map data values to visual properties",
+        "To scale the webpage",
+        "To change font sizes"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 4,
+      question: "Which D3 method is used for data binding?",
+      options: [
+        "bind()",
+        "connect()",
+        "data()",
+        "join()"
+      ],
+      correctAnswer: 2
+    },
+    {
+      id: 5,
+      question: "What is the purpose of d3.enter()?",
+      options: [
+        "To exit a selection",
+        "To create new elements for data",
+        "To enter a new page",
+        "To start an animation"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 6,
+      question: "Which D3 method is used to create smooth transitions?",
+      options: [
+        "animate()",
+        "transition()",
+        "tween()",
+        "motion()"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 7,
+      question: "What type of element does D3 typically use for visualizations?",
+      options: [
+        "Canvas",
+        "SVG",
+        "Div",
+        "Image"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 8,
+      question: "How do you handle events in D3?",
+      options: [
+        "addEventListener()",
+        "on()",
+        "handle()",
+        "event()"
+      ],
+      correctAnswer: 1
+    }
+  ],
+  'JAVASCRIPT': [
+    {
+      id: 1,
+      question: "What is object destructuring used for?",
+      options: [
+        "To delete object properties",
+        "To extract object properties into variables",
+        "To combine objects",
+        "To copy objects"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 2,
+      question: "What is the shorthand property syntax in objects?",
+      options: [
+        "When property name matches variable name, you can omit the value",
+        "When property value is undefined",
+        "When property name is a string",
+        "When property value is null"
+      ],
+      correctAnswer: 0
+    },
+    {
+      id: 3,
+      question: "What's the difference between arrow functions and regular functions regarding 'this'?",
+      options: [
+        "Arrow functions have their own 'this'",
+        "Arrow functions inherit 'this' from surrounding context",
+        "Arrow functions don't have 'this'",
+        "Regular functions don't have 'this'"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 4,
+      question: "What is a factory function?",
+      options: [
+        "A function that creates objects",
+        "A function that deletes objects",
+        "A function that modifies objects",
+        "A function that compares objects"
+      ],
+      correctAnswer: 0
+    },
+    {
+      id: 5,
+      question: "What is the purpose of getters and setters?",
+      options: [
+        "To make properties private",
+        "To intercept property access and assignment",
+        "To delete properties",
+        "To rename properties"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 6,
+      question: "Which array method would you use to transform each element?",
+      options: [
+        "filter()",
+        "reduce()",
+        "map()",
+        "forEach()"
+      ],
+      correctAnswer: 2
+    },
+    {
+      id: 7,
+      question: "What does the reduce() method do?",
+      options: [
+        "Removes elements from array",
+        "Combines array elements into single value",
+        "Filters array elements",
+        "Maps array elements"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 8,
+      question: "What's the difference between forEach and map?",
+      options: [
+        "forEach is faster",
+        "map creates a new array, forEach doesn't",
+        "forEach can modify elements, map can't",
+        "There is no difference"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 9,
+      question: "What is a higher-order function?",
+      options: [
+        "A function that takes long to execute",
+        "A function that accepts or returns functions",
+        "A function with many parameters",
+        "A function that uses recursion"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 10,
+      question: "When should you use the break statement?",
+      options: [
+        "To skip one iteration",
+        "To exit a loop early",
+        "To start a loop",
+        "To pause a loop"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 11,
+      question: "What is the purpose of the spread operator (...)?",
+      options: [
+        "To delete array elements",
+        "To expand elements into individual items",
+        "To sort arrays",
+        "To filter arrays"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 12,
+      question: "What does Array.fill() do?",
+      options: [
+        "Sorts the array",
+        "Removes elements",
+        "Fills array with a static value",
+        "Joins array elements"
+      ],
+      correctAnswer: 2
+    },
+    {
+      id: 13,
+      question: "How can you check if a number is even using modulo?",
+      options: [
+        "num / 2",
+        "num % 2 === 0",
+        "num * 2",
+        "num - 2"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 14,
+      question: "What is short-circuit evaluation?",
+      options: [
+        "A way to optimize code",
+        "Using && and || for conditional logic",
+        "A way to terminate loops",
+        "A way to catch errors"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 15,
+      question: "What is the purpose of optional chaining (?.)?",
+      options: [
+        "To create optional parameters",
+        "To safely access nested properties",
+        "To make properties optional",
+        "To chain function calls"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 16,
+      question: "How do you swap variables using array destructuring?",
+      options: [
+        "Using a temporary variable",
+        "[a, b] = [b, a]",
+        "swap(a, b)",
+        "a.swap(b)"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 17,
+      question: "What does Array.from() with a mapping function do?",
+      options: [
+        "Copies an array",
+        "Creates an array from another object",
+        "Generates a range of numbers",
+        "Converts array to object"
+      ],
+      correctAnswer: 2
+    },
+    {
+      id: 18,
+      question: "What's the difference between for...of and for...in?",
+      options: [
+        "No difference",
+        "for...of for arrays, for...in for object properties",
+        "for...in for arrays, for...of for object properties",
+        "They're interchangeable"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 19,
+      question: "What does Promise.all() do?",
+      options: [
+        "Cancels all promises",
+        "Runs promises sequentially",
+        "Runs promises in parallel and waits for all to complete",
+        "Rejects all promises"
+      ],
+      correctAnswer: 2
+    },
+    {
+      id: 20,
+      question: "How can you create an array with a range of numbers?",
+      options: [
+        "range(1, 5)",
+        "Array.range(5)",
+        "Array.from({length: 5}, (_, i) => i + 1)",
+        "new Array(1..5)"
+      ],
+      correctAnswer: 2
+    },
+    {
+      id: 33,
+      question: "Which loop should you use to iterate over object properties?",
+      options: [
+        "for...of",
+        "for...in",
+        "forEach",
+        "while"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 34,
+      question: "What will `[1, 2, 3].map(x => x * 2)` return?",
+      options: [
+        "[1, 2, 3]",
+        "[2, 4, 6]",
+        "undefined",
+        "6"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 35,
+      question: "How would you sum all numbers in an array [1, 2, 3, 4]?",
+      options: [
+        "array.sum()",
+        "array.reduce((a, b) => a + b, 0)",
+        "array.forEach(sum += x)",
+        "array.total()"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 36,
+      question: "What's the output of `['a', 'b', 'c'].join('-')`?",
+      options: [
+        "abc",
+        "a-b-c",
+        "['a'-'b'-'c']",
+        "a,b,c"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 37,
+      question: "How do you create an array of 5 zeros using Array.fill()?",
+      options: [
+        "Array(5).fill(0)",
+        "new Array.fill(0, 5)",
+        "[].fill(0, 5)",
+        "Array.fill(0).length(5)"
+      ],
+      correctAnswer: 0
+    },
+    {
+      id: 38,
+      question: "What's wrong with this loop: `for(let i = 0; i < 5; i--)`?",
+      options: [
+        "Syntax error",
+        "Nothing wrong",
+        "Will run infinitely",
+        "i cannot be decremented"
+      ],
+      correctAnswer: 2
+    },
+    {
+      id: 39,
+      question: "How do you check if ANY array element is greater than 5?",
+      options: [
+        "array.includes(x > 5)",
+        "array.some(x => x > 5)",
+        "array.filter(x => x > 5)",
+        "array.find(x => x > 5)"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 40,
+      question: "What does `array.every(x => x > 0)` check?",
+      options: [
+        "If array contains 0",
+        "If all elements are positive",
+        "If any element is positive",
+        "If array is empty"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 41,
+      question: "How do you find the first even number in an array?",
+      options: [
+        "array.filter(x => x % 2 === 0)",
+        "array.find(x => x % 2 === 0)",
+        "array.some(x => x % 2 === 0)",
+        "array.includes(x => x % 2 === 0)"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 42,
+      question: "What's the difference between break and continue in loops?",
+      options: [
+        "No difference",
+        "break exits loop, continue skips iteration",
+        "continue exits loop, break skips iteration",
+        "They both exit the loop"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 43,
+      question: "What is the .length property used for in arrays?",
+      options: [
+        "To change array size",
+        "To get number of elements in array",
+        "To get last element",
+        "To add new elements"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 44,
+      question: "What's the difference between null and undefined?",
+      options: [
+        "They are the same",
+        "null is assigned, undefined is default empty value",
+        "undefined is assigned, null is default empty value",
+        "null is for numbers, undefined for strings"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 45,
+      question: "What will `Math.floor(5.95)` return?",
+      options: [
+        "6",
+        "5",
+        "5.95",
+        "5.9"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 46,
+      question: "Which operator is used for string interpolation in template literals?",
+      options: [
+        "{variable}",
+        "#{variable}",
+        "${variable}",
+        "@{variable}"
+      ],
+      correctAnswer: 2
+    },
+    {
+      id: 47,
+      question: "What's the difference between let and const?",
+      options: [
+        "No difference",
+        "let is block-scoped, const is function-scoped",
+        "const cannot be reassigned, let can be",
+        "let cannot be reassigned, const can be"
+      ],
+      correctAnswer: 2
+    },
+    {
+      id: 48,
+      question: "What will `365 % 7` return?",
+      options: [
+        "52",
+        "1",
+        "7",
+        "0"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 49,
+      question: "What's the scope of a variable declared with var?",
+      options: [
+        "Block scope",
+        "Function scope",
+        "Module scope",
+        "No scope"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 50,
+      question: "Which method is used to add elements to the end of an array?",
+      options: [
+        "append()",
+        "push()",
+        "add()",
+        "insert()"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 51,
+      question: "What does the logical NOT operator (!) do?",
+      options: [
+        "Adds numbers",
+        "Concatenates strings",
+        "Inverts boolean values",
+        "Compares values"
+      ],
+      correctAnswer: 2
+    },
+    {
+      id: 52,
+      question: "What's the result of `'5' + 2` in JavaScript?",
+      options: [
+        "7",
+        "'52'",
+        "52",
+        "Error"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 53,
+      question: "Which values are considered falsy in JavaScript?",
+      options: [
+        "Only false",
+        "false, 0, '', null, undefined, NaN",
+        "false and 0 only",
+        "false, null, and undefined only"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 54,
+      question: "What's the purpose of the switch statement?",
+      options: [
+        "To declare variables",
+        "To create loops",
+        "To handle multiple conditions for a single value",
+        "To define functions"
+      ],
+      correctAnswer: 2
+    },
+    {
+      id: 55,
+      question: "How do you write a multi-line comment in JavaScript?",
+      options: [
+        "// comment //",
+        "/* comment */",
+        "# comment #",
+        "<!-- comment -->"
+      ],
+      correctAnswer: 1
+    }
+  ],
+  'REACT': [
+    {
+      id: 1,
+      question: "What is a functional component in React?",
+      options: [
+        "A regular JavaScript function",
+        "A function that returns React elements",
+        "A class that extends React.Component",
+        "A component with functions only"
+      ],
+      correctAnswer: 1
+    },
+    // ... (previous React questions)
+  ],
+  'FIREBASE': [
+    {
+      id: 1,
+      question: "What is Firebase?",
+      options: [
+        "A database only",
+        "A cloud platform with various development tools",
+        "A testing framework",
+        "A programming language"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 2,
+      question: "What is Firestore?",
+      options: [
+        "A file storage service",
+        "A NoSQL document database",
+        "A hosting service",
+        "An authentication service"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 3,
+      question: "How do you listen to real-time updates in Firestore?",
+      options: [
+        "Using setInterval",
+        "Using onSnapshot()",
+        "Using fetch()",
+        "Using async/await"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 4,
+      question: "What is Firebase Authentication used for?",
+      options: [
+        "Database queries",
+        "User sign-in and management",
+        "File storage",
+        "Hosting websites"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 5,
+      question: "What is Firebase Cloud Functions?",
+      options: [
+        "Client-side functions",
+        "Serverless functions that run in response to events",
+        "Database functions",
+        "Authentication functions"
+      ],
+      correctAnswer: 1
+    }
+  ],
+  'NEXTJS': [
+    {
+      id: 1,
+      question: "What is Next.js?",
+      options: [
+        "A database",
+        "A React framework for production",
+        "A testing library",
+        "A CSS framework"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 2,
+      question: "What is the purpose of getStaticProps?",
+      options: [
+        "To handle client-side data fetching",
+        "To fetch data at build time",
+        "To handle routing",
+        "To manage state"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 3,
+      question: "What is server-side rendering in Next.js?",
+      options: [
+        "Rendering on the client",
+        "Rendering pages on the server for each request",
+        "Static rendering",
+        "No rendering"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 4,
+      question: "What is the purpose of the pages directory in Next.js?",
+      options: [
+        "To store images",
+        "To define routes automatically",
+        "To store styles",
+        "To store components"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 5,
+      question: "What is the purpose of _app.js in Next.js?",
+      options: [
+        "To store API routes",
+        "To initialize pages and maintain state",
+        "To define components",
+        "To store utilities"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 6,
+      question: "How do you handle API routes in Next.js?",
+      options: [
+        "Using external servers",
+        "Creating handlers in pages/api directory",
+        "Using middleware",
+        "Using databases directly"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 7,
+      question: "What is Next.js Image component used for?",
+      options: [
+        "Decorative purposes only",
+        "Automatic image optimization",
+        "Image storage",
+        "Image editing"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 8,
+      question: "What is the purpose of getServerSideProps?",
+      options: [
+        "Client-side data fetching",
+        "Server-side rendering at request time",
+        "Static site generation",
+        "API route handling"
+      ],
+      correctAnswer: 1
+    }
   ]
 };
 
 export default function QuizSection({ topicId }: QuizSectionProps) {
+  // Add these debug logs
+  console.log('Current topicId:', topicId);
+  console.log('Available topics:', Object.keys(quizzesByTopic));
+  console.log('Questions for current topic:', quizzesByTopic[topicId || '']);
+
+  if (!topicId) {
+    return <RandomQuiz />;
+  }
+
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [showResult, setShowResult] = useState(false);
   const [score, setScore] = useState(0);
   const [quizComplete, setQuizComplete] = useState(false);
+  const [randomQuestions, setRandomQuestions] = useState<Question[]>([]);
 
-  if (!topicId) {
-    // Get all questions from all topics
-    const allQuestions = Object.values(quizzesByTopic).flat();
-    
-    // Shuffle and take first 10 questions (or however many you want)
-    const shuffledQuestions = allQuestions
-      .sort(() => Math.random() - 0.5)
-      .slice(0, 10);
-
-    return (
-      <div className="bg-white rounded-lg shadow p-6">
-        <h2 className="text-2xl font-bold mb-4">Random Practice Quiz</h2>
-        {!quizComplete ? (
-          <div className="space-y-4">
-            <div className="flex justify-between items-center">
-              <p className="text-gray-600">
-                Question {currentQuestionIndex + 1} of {shuffledQuestions.length}
-              </p>
-              <p className="text-gray-600">
-                Score: {score}/{shuffledQuestions.length}
-              </p>
-            </div>
-            <p className="text-lg font-medium">{shuffledQuestions[currentQuestionIndex].question}</p>
-            <div className="space-y-2">
-              {shuffledQuestions[currentQuestionIndex].options.map((option, index) => (
-                <button
-                  key={index}
-                  onClick={() => !showResult && setSelectedAnswer(index)}
-                  className={`w-full text-left p-3 rounded ${
-                    selectedAnswer === null
-                      ? 'hover:bg-gray-100 bg-gray-50'
-                      : showResult
-                      ? index === shuffledQuestions[currentQuestionIndex].correctAnswer
-                        ? 'bg-green-100 border-green-500'
-                        : index === selectedAnswer
-                        ? 'bg-red-100 border-red-500'
-                        : 'bg-gray-50'
-                      : selectedAnswer === index
-                      ? 'bg-blue-100'
-                      : 'bg-gray-50'
-                  }`}
-                  disabled={showResult}
-                >
-                  {option}
-                </button>
-              ))}
-            </div>
-            {!showResult ? (
-              <button
-                onClick={() => {
-                  if (selectedAnswer !== null) {
-                    setShowResult(true);
-                    if (selectedAnswer === shuffledQuestions[currentQuestionIndex].correctAnswer) {
-                      setScore(score + 1);
-                    }
-                  }
-                }}
-                disabled={selectedAnswer === null}
-                className={`mt-4 px-4 py-2 rounded ${
-                  selectedAnswer === null
-                    ? 'bg-gray-300 cursor-not-allowed'
-                    : 'bg-blue-500 hover:bg-blue-600 text-white'
-                }`}
-              >
-                Submit Answer
-              </button>
-            ) : (
-              <button
-                onClick={() => {
-                  if (currentQuestionIndex < shuffledQuestions.length - 1) {
-                    setCurrentQuestionIndex(currentQuestionIndex + 1);
-                    setSelectedAnswer(null);
-                    setShowResult(false);
-                  } else {
-                    setQuizComplete(true);
-                  }
-                }}
-                className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-              >
-                {currentQuestionIndex === shuffledQuestions.length - 1 ? 'Finish Quiz' : 'Next Question'}
-              </button>
-            )}
-          </div>
-        ) : (
-          <div>
-            <p className="text-lg mb-4">
-              Quiz Complete! Your score: {score} out of {shuffledQuestions.length}
-            </p>
-            <p className="text-lg mb-4">
-              Percentage: {Math.round((score / shuffledQuestions.length) * 100)}%
-            </p>
-            <button
-              onClick={() => {
-                setCurrentQuestionIndex(0);
-                setSelectedAnswer(null);
-                setShowResult(false);
-                setScore(0);
-                setQuizComplete(false);
-              }}
-              className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-            >
-              Try Another Quiz
-            </button>
-          </div>
-        )}
-      </div>
-    );
-  }
+  // Use useEffect to generate random questions on client-side only
+  useEffect(() => {
+    if (!topicId) {
+      const allQuestions = Object.values(quizzesByTopic).flat();
+      const shuffled = [...allQuestions].sort(() => Math.random() - 0.5).slice(0, 10);
+      setRandomQuestions(shuffled);
+    }
+  }, [topicId]);
 
   if (!topicId || !quizzesByTopic[topicId]) {
     return (

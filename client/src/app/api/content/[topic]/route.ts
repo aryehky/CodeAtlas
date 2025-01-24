@@ -10,7 +10,10 @@ export async function GET(
     const mdnDir = path.join(process.cwd(), 'mdn');
     const filePath = path.join(mdnDir, `${params.topic}.md`);
     
+    console.log('Looking for file:', filePath);
+    
     if (!fs.existsSync(filePath)) {
+      console.log('File not found:', filePath);
       return new NextResponse('Topic not found', { status: 404 });
     }
 
