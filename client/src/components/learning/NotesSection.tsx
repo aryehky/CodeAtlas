@@ -5,16 +5,18 @@ import { useEffect, useState } from 'react';
 import { marked } from 'marked';
 
 interface NotesSectionProps {
-  topicId: string | undefined;
+  topicId?: string;
 }
 
-const NotesSection: React.FC<NotesSectionProps> = ({ topicId }) => {
+export default function NotesSection({ topicId }: NotesSectionProps) {
   const [content, setContent] = useState('');
 
   useEffect(() => {
+    let isMounted = true;  // For cleanup
+
     async function loadContent() {
       if (!topicId) {
-        setContent(`
+        const defaultContent = `
           <div class="text-gray-600">
             <p>Select a topic from the sidebar to view detailed notes and documentation.</p>
             <p class="mt-4">Each topic includes:</p>
@@ -25,37 +27,45 @@ const NotesSection: React.FC<NotesSectionProps> = ({ topicId }) => {
               <li>Code examples</li>
             </ul>
           </div>
-        `);
+        `;
+        if (isMounted) setContent(defaultContent);
         return;
       }
 
       try {
         console.log('Loading content for topic:', topicId);
-        const response = await fetch(`/api/content/${topicId}`);
+        const response = await fetch(`/mdn/${topicId}.md`);
+        
         if (!response.ok) {
           throw new Error('Failed to load content');
         }
-        const data = await response.text();
-        const htmlContent = marked(data);
-        setContent(htmlContent);
+
+        const text = await response.text();
+        const html = marked(text);
+        
+        if (isMounted) {
+          setContent(html);
+        }
       } catch (error) {
         console.error('Error loading content:', error);
-        setContent(`
-          <div class="text-red-600">
-            <p>Error loading content. Please try again.</p>
-            <p class="mt-2 text-sm">If the problem persists, contact support.</p>
-          </div>
-        `);
+        if (isMounted) {
+          setContent(`
+            <div class="text-red-600">
+              <p>Error loading content. Please try again.</p>
+              <p class="mt-2 text-sm">If the problem persists, contact support.</p>
+            </div>
+          `);
+        }
       }
     }
 
     loadContent();
-  }, [topicId]);
 
-  // Only show content if a topic is selected
-  if (!topicId) {
-    return null; // Return nothing when no topic is selected
-  }
+    // Cleanup function
+    return () => {
+      isMounted = false;
+    };
+  }, [topicId]);
 
   return (
     <div className="bg-white rounded-xl shadow-lg p-8 border border-gray-100">
@@ -81,6 +91,4 @@ const NotesSection: React.FC<NotesSectionProps> = ({ topicId }) => {
       />
     </div>
   );
-};
-
-export default NotesSection; 
+} 
