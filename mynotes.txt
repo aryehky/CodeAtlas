@@ -1,0 +1,15 @@
+.git will generate on its own
+
+create client adn server folders
+
+under client:
+.next will generate on its own
+node_modules will generate on its own
+
+public: The public/ folder in a React (or Next.js) project is used to store static files that your app can serve directly.
+Custom static files (e.g., images, logos, or custom favicons) can also go here.
+Contains manifest.json, index.html, which are necessary for the app to work.
+
+index.html: This is the main HTML file that serves as the entry point for your React application.
+manifest.json: This file defines metadata about your app, such as its name, icons, and start URL.
+
