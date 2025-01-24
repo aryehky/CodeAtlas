@@ -3,7 +3,7 @@ const nextConfig = {
     reactStrictMode: true,
     swcMinify: true,
     images: {
-      domains: ['images.unsplash.com'], // Add any image domains you'll use
+      unoptimized: true,
       remotePatterns: [
         {
           protocol: 'https',
