@@ -14,21 +14,28 @@ export default function Navbar({ onTopicSelect }: NavbarProps) {
   const categories = [
     {
       name: "Languages",
-      topics: ["C++", "CSS", "HTML", "JavaScript", "Python", "TypeScript"]
+      topics: ["CSS", "HTML", "Java", "JavaScript", "Python", "SQL", "TypeScript", "Solidity"]
     },
     {
-      name: "Frameworks",
-      topics: ["Next.js", "React"]
+      name: "Frameworks & Libraries",
+      topics: ["React", "NextJS", "Tailwind", "ChartJS", "D3"]
     },
     {
       name: "Databases",
-      topics: ["PostgreSQL", "Firebase"]
+      topics: ["PostgreSQL", "Firebase", "EdgeQL", "GraphQL"]
     },
     {
       name: "Testing",
       topics: ["Jest", "Cypress"]
     },
-    // Add other categories as needed
+    {
+      name: "Tools & Services",
+      topics: ["Git", "NPM", "Vercel", "AWS"]
+    },
+    {
+      name: "Authentication & Security",
+      topics: ["JWT", "OAuth"]
+    }
   ];
 
   return (
