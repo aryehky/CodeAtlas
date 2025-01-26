@@ -21,12 +21,7 @@ export default function NotesSection({ topicId }: NotesSectionProps) {
 
       try {
         console.log('Loading content for topic:', topicId);
-        const response = await fetch(`/mdn/${topicId.toUpperCase()}.md`, {
-          headers: {
-            'Accept': 'text/markdown',
-            'Cache-Control': 'no-cache'
-          }
-        });
+        const response = await fetch(`/mdn/${topicId.toUpperCase()}.md`);
         
         if (!response.ok) {
           console.error('Failed to load:', topicId, response.status);
@@ -34,7 +29,6 @@ export default function NotesSection({ topicId }: NotesSectionProps) {
         }
 
         const text = await response.text();
-        console.log('Content loaded:', text.substring(0, 100));
         const html = marked(text);
         setContent(html);
       } catch (error) {
