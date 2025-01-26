@@ -15,12 +15,24 @@ const nextConfig = {
       return []
     },
     async rewrites() {
-      return []
+      return [
+        {
+          source: '/mdn/:path*',
+          destination: '/public/mdn/:path*'
+        }
+      ];
     },
     env: {
       // Add any public environment variables here
       NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
     },
+    webpack: (config) => {
+      config.module.rules.push({
+        test: /\.md$/,
+        use: 'raw-loader'
+      });
+      return config;
+    }
   }
   
   module.exports = nextConfig
