@@ -29,7 +29,7 @@ export default function NotesSection({ topicId }: NotesSectionProps) {
         }
 
         const text = await response.text();
-        const html = marked(text);
+        const html = marked.parse(text) as string;
         setContent(html);
       } catch (error) {
         console.error('Error loading content:', error);
